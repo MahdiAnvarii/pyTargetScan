@@ -115,7 +115,6 @@ def checkArguments():
     return (miRNAfile, UTRfile, coordsFile)
 
 MIRNA_FILE, UTR_FILE, COORDS_FILE = checkArguments()
-
 #print(MIRNA_FILE)
 #print(UTR_FILE)
 #print(COORDS_FILE)
@@ -608,8 +607,9 @@ def summarize_print_groups_this_gene_this_mirna():
         if GROUP_NUM_TO_SITE_TYPES[group_num]:
             site_types = str(GROUP_NUM_TO_SITE_TYPES[group_num]).split(";")
             unique_site_types = make_list_non_redundant(GROUP_NUM_TO_SITE_TYPES[group_num], ";")
-            #unique_site_types_names_list = "+".join([SITE_ID_2_SITE_TYPE[site_type] for site_type in unique_site_types])
-            unique_site_types_names_list = "+".join([SITE_ID_2_SITE_TYPE.get(site_type, 'Unknown') for site_type in unique_site_types])
+            unique_site_types_names_list = "+".join([SITE_ID_2_SITE_TYPE[int(site_type)] for site_type in unique_site_types])
+            #unique_site_types_names_list = "+".join([SITE_ID_2_SITE_TYPE[str(site_type)] for site_type in unique_site_types])
+            #unique_site_types_names_list = "+".join([SITE_ID_2_SITE_TYPE.get(str(site_type), 'Unknown') for site_type in unique_site_types])
 
         else:
             unique_site_types_names_list = ""
@@ -622,9 +622,12 @@ def summarize_print_groups_this_gene_this_mirna():
 
     for data_one_site_this_gene_this_mir in OUTPUT_THIS_GENE_THIS_MIR:
         f = data_one_site_this_gene_this_mir.split("\t")
+        #print(f)
         group_num_this_site = int(f[7])
         site_type_this_site = int(f[8])
+        f[8] = SITE_ID_2_SITE_TYPE[int(site_type_this_site)]
         group_type = group_num_to_site_types_list[group_num_this_site]
+        data_one_site_this_gene_this_mir = "\t".join(f)
 
         if GROUP_TYPES_LIST_2_GROUP_TYPE.get(group_type):
             group_type = GROUP_TYPES_LIST_2_GROUP_TYPE[group_type]
@@ -636,11 +639,7 @@ def summarize_print_groups_this_gene_this_mirna():
             nr_species_this_subset = make_list_non_redundant(GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST[group_num_this_site].get(site_type_this_site, ""), " ")
             data_one_site_this_gene_this_mir += f"\t{' '.join(nr_species_this_subset)}"
 
-        # print(coords, data_one_site_this_gene_this_mir, sep="\n")
-        # Open the file for writing
-        #with open('COORDS.txt', 'w') as file:
-        # Write the data to the file
-        #file.write(data_one_site_this_gene_this_mir + "\n")
+        #print(data_one_site_this_gene_this_mir + "\n")
         with open(COORDS_FILE, "a") as coords:
             # Print output file header
             coords.write((data_one_site_this_gene_this_mir + "\n"))
@@ -1038,28 +1037,28 @@ read_utrs()
 
 
 # QC
-print(GROUP_NUM)
-print(MIR_FAM_ID)
-print(LAST_UTR_ID)
-print(OUTPUT_THIS_GENE_THIS_MIR)
-print(MIR_ID_2_SEED)
-print(MIR_ID_SPECIES)
-print(MIR_TYPE_2_MATCH)
-print(SPECIES_START_END)
-print(SPECIES_START_END_2_MATCH)
-print(SPECIES_TO_UTR)
-print(SPECIES_START_END_REMOVED)
-print(SPECIES_START_END_2_MATCH_REMOVED)
-print(GROUP_NUM_TO_SITE_TYPES)
-print(GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST)
-print(GROUP_TYPES_LIST_2_GROUP_TYPE)
-print(SITE_TO_GROUP_NUM)
-print(GROUP_NUM_TO_SPECIES)
-print(GET_MATCH)
-print(SITE_ID_2_SITE_TYPE)
-print(SITE_ID_2_LENGTH)
+#print(GROUP_NUM)
+#print(MIR_FAM_ID)
+#print(LAST_UTR_ID)
+#print(OUTPUT_THIS_GENE_THIS_MIR)
+#print(MIR_ID_2_SEED)
+#print(MIR_ID_SPECIES)
+#print(MIR_TYPE_2_MATCH)
+#print(SPECIES_START_END)
+#print(SPECIES_START_END_2_MATCH)
+#print(SPECIES_TO_UTR)
+#print(SPECIES_START_END_REMOVED)
+#print(SPECIES_START_END_2_MATCH_REMOVED)
+#print(GROUP_NUM_TO_SITE_TYPES)
+#print(GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST)
+#print(GROUP_TYPES_LIST_2_GROUP_TYPE)
+#print(SITE_TO_GROUP_NUM)
+#print(GROUP_NUM_TO_SPECIES)
+#print(GET_MATCH)
+#print(SITE_ID_2_SITE_TYPE)
+#print(SITE_ID_2_LENGTH)
 
-print(FIND_SITES_ALL_SPECIES)
-print(REQUIRED_OVERLAP)
-print(BEG_UTR_MASK_LENGTH)
-print(VERBOSE)
+#print(FIND_SITES_ALL_SPECIES)
+#print(REQUIRED_OVERLAP)
+#print(BEG_UTR_MASK_LENGTH)
+#print(VERBOSE)

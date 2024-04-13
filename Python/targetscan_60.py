@@ -54,6 +54,7 @@ def checkArguments():
             {} -h
 
     Author: George Bell, Bioinformatics and Research Computing
+    Translator: Mahdi Anvari, University of Tehran
     Version: 6.0
     Copyright (c) The Whitehead Institute of Biomedical Research
     """.format(__file__, __file__)

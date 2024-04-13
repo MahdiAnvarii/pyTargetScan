@@ -42,7 +42,7 @@ def checkArguments():
                  using the modified TargetScanS algorithm.
 
     USAGE:
-            {} miRNA_file UTR_file PredictedTargetsOutputFile
+            ./{} miRNA_file UTR_file PredictedTargetsOutputFile
 
     Required input files:
             miRNA_file    => miRNA families by species
@@ -51,13 +51,13 @@ def checkArguments():
     Output file:
             PredictedTargetsOutputFile    => Lists sites using alignment coordinates (MSA and UTR)
     For a description of input file formats, type
-            {} -h
+            ./{} -h
 
     Author: George Bell, Bioinformatics and Research Computing
     Translator: Mahdi Anvari, University of Tehran
     Version: 6.0
     Copyright (c) The Whitehead Institute of Biomedical Research
-    """.format(__file__, __file__)
+    """.format(os.path.basename(__file__), os.path.basename(__file__))
 
     FILE_FORMATS = """
     ** Required input files:
@@ -116,7 +116,6 @@ def checkArguments():
     return (miRNAfile, UTRfile, coordsFile)
 
 MIRNA_FILE, UTR_FILE, COORDS_FILE = checkArguments()
-#Done; -------------------------------------------------------------------------------------------------------
 
 def makeSeedMatchRegex(seedMatch):
     # Turn a seed match region into a Python regular expression
@@ -223,8 +222,6 @@ def get_site_type_keys():
 
 get_site_type_keys()
 
-#Done; -----------------------------------------------------------------------------------------------------
-
 
 def get_matches(MIR_FAM_ID, speciesID, matchType):
     global GROUP_NUM
@@ -266,7 +263,7 @@ def get_matches(MIR_FAM_ID, speciesID, matchType):
         # Link site to actual match (sequence alignment region, possibly including gaps)
         SPECIES_START_END_2_MATCH[f"{speciesID}::{start}::{end}"] = matched_sub_alignment
 
-        # Backtrack far enough for matches with gaps (corrected 21 July 2010)
+        # Backtrack far enough for matches with gaps
         match_start = match.start()
         match_end = match.end()
         backtrack_length = match_end - match_start
@@ -553,8 +550,6 @@ def summarize_print_groups_this_gene_this_mirna():
             site_types = str(GROUP_NUM_TO_SITE_TYPES[group_num]).split(";")
             unique_site_types = make_list_non_redundant(GROUP_NUM_TO_SITE_TYPES[group_num], ";")
             unique_site_types_names_list = "+".join([SITE_ID_2_SITE_TYPE[int(site_type)] for site_type in unique_site_types])
-            #unique_site_types_names_list = "+".join([SITE_ID_2_SITE_TYPE[str(site_type)] for site_type in unique_site_types])
-            #unique_site_types_names_list = "+".join([SITE_ID_2_SITE_TYPE.get(str(site_type), 'Unknown') for site_type in unique_site_types])
 
         else:
             unique_site_types_names_list = ""
@@ -837,7 +832,6 @@ def group_sites_this_gene_this_mirna2():
                 GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST[SITE_TO_GROUP_NUM[this_site]][6] += species_this_site + " "  # 6mer
 
         # Given the MSA coords, get the corresponding UTR coords
-        # Correct 8mer OBOB: Nov 26, 2007
         utr_start, utr_end = get_utr_coords(SPECIES_TO_UTR[site_all_info[0]], int(site_all_info[1]), SPECIES_START_END[this_site])
 
         # Link each group to the species within it
@@ -979,31 +973,3 @@ def read_utrs():
     process_UTR_set()
 
 read_utrs()
-
-
-# QC
-#print(GROUP_NUM)
-#print(MIR_FAM_ID)
-#print(LAST_UTR_ID)
-#print(OUTPUT_THIS_GENE_THIS_MIR)
-#print(MIR_ID_2_SEED)
-#print(MIR_ID_SPECIES)
-#print(MIR_TYPE_2_MATCH)
-#print(SPECIES_START_END)
-#print(SPECIES_START_END_2_MATCH)
-#print(SPECIES_TO_UTR)
-#print(SPECIES_START_END_REMOVED)
-#print(SPECIES_START_END_2_MATCH_REMOVED)
-#print(GROUP_NUM_TO_SITE_TYPES)
-#print(GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST)
-#print(GROUP_TYPES_LIST_2_GROUP_TYPE)
-#print(SITE_TO_GROUP_NUM)
-#print(GROUP_NUM_TO_SPECIES)
-#print(GET_MATCH)
-#print(SITE_ID_2_SITE_TYPE)
-#print(SITE_ID_2_LENGTH)
-
-#print(FIND_SITES_ALL_SPECIES)
-#print(REQUIRED_OVERLAP)
-#print(BEG_UTR_MASK_LENGTH)
-#print(VERBOSE)

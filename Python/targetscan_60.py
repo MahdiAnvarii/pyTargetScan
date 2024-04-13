@@ -115,11 +115,7 @@ def checkArguments():
     return (miRNAfile, UTRfile, coordsFile)
 
 MIRNA_FILE, UTR_FILE, COORDS_FILE = checkArguments()
-#print(MIRNA_FILE)
-#print(UTR_FILE)
-#print(COORDS_FILE)
 #Done; -------------------------------------------------------------------------------------------------------
-
 
 def makeSeedMatchRegex(seedMatch):
     # Turn a seed match region into a Python regular expression
@@ -195,32 +191,6 @@ def readMiRNAs():
 
 readMiRNAs()
 
-# QC
-#print(GROUP_NUM)
-#print(MIR_FAM_ID)
-#print(LAST_UTR_ID)
-#print(OUTPUT_THIS_GENE_THIS_MIR)
-#print(MIR_ID_2_SEED)
-#print(MIR_ID_SPECIES)
-#print(MIR_TYPE_2_MATCH)
-#print(SPECIES_START_END)
-#print(SPECIES_START_END_2_MATCH)
-#print(SPECIES_TO_UTR)
-#print(SPECIES_START_END_REMOVED)
-#print(SPECIES_START_END_2_MATCH_REMOVED)
-#print(GROUP_NUM_TO_SITE_TYPES)
-#print(GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST)
-#print(GROUP_TYPES_LIST_2_GROUP_TYPE)
-#print(SITE_TO_GROUP_NUM)
-#print(GROUP_NUM_TO_SPECIES)
-#print(GET_MATCH)
-#print(SITE_ID_2_SITE_TYPE)
-#print(SITE_ID_2_LENGTH)
-
-#print(FIND_SITES_ALL_SPECIES)
-#print(REQUIRED_OVERLAP)
-#print(BEG_UTR_MASK_LENGTH)
-#print(VERBOSE)
 
 with open(COORDS_FILE, "w") as coords:
     # Print output file header
@@ -252,32 +222,6 @@ def get_site_type_keys():
 
 get_site_type_keys()
 
-# QC
-#print(GROUP_NUM)
-#print(MIR_FAM_ID)
-#print(LAST_UTR_ID)
-#print(OUTPUT_THIS_GENE_THIS_MIR)
-#print(MIR_ID_2_SEED)
-#print(MIR_ID_SPECIES)
-#print(MIR_TYPE_2_MATCH)
-#print(SPECIES_START_END)
-#print(SPECIES_START_END_2_MATCH)
-#print(SPECIES_TO_UTR)
-#print(SPECIES_START_END_REMOVED)
-###print(SPECIES_START_END_2_MATCH_REMOVED)
-#print(GROUP_NUM_TO_SITE_TYPES)
-#print(GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST)
-#print(GROUP_TYPES_LIST_2_GROUP_TYPE)
-#print(SITE_TO_GROUP_NUM)
-#print(GROUP_NUM_TO_SPECIES)
-#print(GET_MATCH)
-#print(SITE_ID_2_SITE_TYPE)
-#print(SITE_ID_2_LENGTH)
-
-#print(FIND_SITES_ALL_SPECIES)
-#print(REQUIRED_OVERLAP)
-#print(BEG_UTR_MASK_LENGTH)
-#print(VERBOSE)
 #Done; -----------------------------------------------------------------------------------------------------
 
 

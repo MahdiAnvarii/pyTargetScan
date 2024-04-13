@@ -1,8 +1,9 @@
+Welcome to the Python version of TargetScan! This adaptation brings the power of miRNA target prediction and analysis to the Python ecosystem,
+making it easier for researchers to integrate into their workflows and explore gene regulatory networks.
+
 INTRODUCTION
 
 The Python script targetscan_60.py identifies miRNA targets and then determines whether a given target is conserved or not across a given set of species. 
-The TargetScan 6.0 prediction code produces essentially the same output as the previous version (targetscan_41.py)
-except in the way that a group of hetergenous aligned sites (combinations of at least two of the three site types) is classified,
 TargetScan 6.0 defines a "group type" in these cases to be a combination of site types, which allows subgrouping by species that share the same site type. 
 
 The script takes two input files
@@ -76,5 +77,5 @@ This can be done explicitly by executing it as 'python targetscan_60.py' or chan
 
 QUESTIONS/SUGGESTIONS:
 
-Please direct all correpondence to wibr-bioinformatics@wi.mit.edu
+Please direct all correpondence to mahdi.anvari7@ut.ac.ir
 

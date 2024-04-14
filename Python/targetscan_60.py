@@ -1,4 +1,15 @@
 #!/usr/bin/env python3
+
+#######################################################################
+
+# Basic ideas:
+#
+# 1 - Grab all miRNA info.
+# 2 - Read through UTRs, getting those from one gene at a time.
+# 3 - Identify miRNA sites for this gene.
+# 4 - Group overlapping miRNA sites in different species into a group
+#
+
 import sys
 import os
 import re

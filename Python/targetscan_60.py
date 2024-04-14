@@ -175,7 +175,6 @@ def get_seeds(seedRegion, MIR_FAM_ID):
         6: makeSeedMatchRegex(rseed6)
     }
 
-
 def readMiRNAs():
     global MIR_ID_2_SEED, MIR_ID_SPECIES, MIRNA_FILE
 

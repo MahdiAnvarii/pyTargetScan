@@ -224,7 +224,10 @@ def get_site_type_keys():
 
 def get_matches(MIR_FAM_ID, speciesID, matchType):
 
-    global SPECIES_START_END, SPECIES_START_END_2_MATCH
+    global SPECIES_TO_UTR
+    global MIR_TYPE_2_MATCH
+    global SPECIES_START_END
+    global SPECIES_START_END_2_MATCH
 
     alignment = SPECIES_TO_UTR[speciesID]
     match = MIR_TYPE_2_MATCH[MIR_FAM_ID][matchType]
@@ -250,7 +253,10 @@ def get_matches(MIR_FAM_ID, speciesID, matchType):
 
 def drop_this_site(species, start, end):
 
-    global SPECIES_START_END_REMOVED, SPECIES_START_END_2_MATCH_REMOVED
+    global SPECIES_START_END
+    global SPECIES_START_END_2_MATCH
+    global SPECIES_START_END_REMOVED
+    global SPECIES_START_END_2_MATCH_REMOVED
 
     key = f"{species}::{start}::{end}"
 
@@ -275,28 +281,6 @@ def drop_this_site(species, start, end):
 
 
 def get_subset_coords(alignment):
-    global USAGE
-    global FILE_FORMATS
-    global GROUP_NUM
-    global MIR_FAM_ID
-    global LAST_UTR_ID
-    global OUTPUT_THIS_GENE_THIS_MIR
-    global MIR_ID_2_SEED
-    global MIR_ID_SPECIES
-    global MIR_TYPE_2_MATCH
-    global SPECIES_START_END
-    global SPECIES_START_END_2_MATCH
-    global SPECIES_TO_UTR
-    global SPECIES_START_END_REMOVED
-    global SPECIES_START_END_2_MATCH_REMOVED
-    global GROUP_NUM_TO_SITE_TYPES
-    global GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST
-    global GROUP_TYPES_LIST_2_GROUP_TYPE
-    global SITE_TO_GROUP_NUM
-    global GROUP_NUM_TO_SPECIES
-    global GET_MATCH
-    global SITE_ID_2_SITE_TYPE
-    global SITE_ID_2_LENGTH
 
     match_pos = None
     start_plus_one_offset = None
@@ -321,30 +305,12 @@ def get_subset_coords(alignment):
 
 
 def find_remove_match_subsets():
-    global GROUP_NUM
-    global MIR_FAM_ID
-    global LAST_UTR_ID
-    global OUTPUT_THIS_GENE_THIS_MIR
-    global MIR_ID_2_SEED
-    global MIR_ID_SPECIES
-    global MIR_TYPE_2_MATCH
+
     global SPECIES_START_END
     global SPECIES_START_END_2_MATCH
-    global SPECIES_TO_UTR
     global SPECIES_START_END_REMOVED
     global SPECIES_START_END_2_MATCH_REMOVED
-    global GROUP_NUM_TO_SITE_TYPES
-    global GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST
-    global GROUP_TYPES_LIST_2_GROUP_TYPE
-    global SITE_TO_GROUP_NUM
-    global GROUP_NUM_TO_SPECIES
     global GET_MATCH
-    global SITE_ID_2_SITE_TYPE
-    global SITE_ID_2_LENGTH
-    global FIND_SITES_ALL_SPECIES
-    global REQUIRED_OVERLAP
-    global BEG_UTR_MASK_LENGTH
-    global VERBOSE
 
     # Remove shorter matches that are a subset of longer matches
     # ex: 8mer-1a includes 7mer-m8 and 7mer-1a matches
@@ -427,26 +393,8 @@ def make_list_non_redundant(list_str, sep):
 
 
 def group_this_pair(site1, site2):
-    global GROUP_NUM
-    global MIR_FAM_ID
-    global LAST_UTR_ID
-    global OUTPUT_THIS_GENE_THIS_MIR
-    global MIR_ID_2_SEED
-    global MIR_ID_SPECIES
-    global MIR_TYPE_2_MATCH
-    global SPECIES_START_END
-    global SPECIES_START_END_2_MATCH
-    global SPECIES_TO_UTR
-    global SPECIES_START_END_REMOVED
-    global SPECIES_START_END_2_MATCH_REMOVED
-    global GROUP_NUM_TO_SITE_TYPES
-    global GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST
-    global GROUP_TYPES_LIST_2_GROUP_TYPE
-    global SITE_TO_GROUP_NUM
-    global GROUP_NUM_TO_SPECIES
-    global GET_MATCH
-    global SITE_ID_2_SITE_TYPE
-    global SITE_ID_2_LENGTH
+
+    global GROUP_NUM, SITE_TO_GROUP_NUM
 
     if not SITE_TO_GROUP_NUM.get(site1) or not SITE_TO_GROUP_NUM.get(site2):
         if SITE_TO_GROUP_NUM.get(site1):  # Site 1 already part of a group
@@ -542,22 +490,13 @@ def group_sites_this_gene_this_mirna():
     global MIR_ID_SPECIES
     global MIR_TYPE_2_MATCH
     global SPECIES_START_END
-    global SPECIES_START_END_2_MATCH
     global SPECIES_TO_UTR
-    global SPECIES_START_END_REMOVED
-    global SPECIES_START_END_2_MATCH_REMOVED
     global GROUP_NUM_TO_SITE_TYPES
     global GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST
-    global GROUP_TYPES_LIST_2_GROUP_TYPE
     global SITE_TO_GROUP_NUM
     global GROUP_NUM_TO_SPECIES
     global GET_MATCH
-    global SITE_ID_2_SITE_TYPE
-    global SITE_ID_2_LENGTH
-    global FIND_SITES_ALL_SPECIES
-    global REQUIRED_OVERLAP
-    global BEG_UTR_MASK_LENGTH
-    global VERBOSE
+
 
     for site1 in sorted(SPECIES_START_END.keys()):
         site1_species, site1_start, site1_end = site1.split("::")
@@ -653,28 +592,20 @@ def group_sites_this_gene_this_mirna():
 def process_UTR_set():
     global GROUP_NUM
     global MIR_FAM_ID
-    global LAST_UTR_ID
     global OUTPUT_THIS_GENE_THIS_MIR
     global MIR_ID_2_SEED
     global MIR_ID_SPECIES
+    global GET_MATCH
     global MIR_TYPE_2_MATCH
     global SPECIES_START_END
     global SPECIES_START_END_2_MATCH
     global SPECIES_TO_UTR
-    global SPECIES_START_END_REMOVED
-    global SPECIES_START_END_2_MATCH_REMOVED
     global GROUP_NUM_TO_SITE_TYPES
     global GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST
-    global GROUP_TYPES_LIST_2_GROUP_TYPE
     global SITE_TO_GROUP_NUM
     global GROUP_NUM_TO_SPECIES
-    global GET_MATCH
-    global SITE_ID_2_SITE_TYPE
-    global SITE_ID_2_LENGTH
     global FIND_SITES_ALL_SPECIES
     global REQUIRED_OVERLAP
-    global BEG_UTR_MASK_LENGTH
-    global VERBOSE
 
     # Look at each miRNA family
     for MIR_FAM_ID in sorted(MIR_ID_2_SEED.keys()):
@@ -714,28 +645,7 @@ def process_UTR_set():
 
 def read_utrs():
     global UTR_FILE
-    global GROUP_NUM
-    global MIR_FAM_ID
     global LAST_UTR_ID
-    global OUTPUT_THIS_GENE_THIS_MIR
-    global MIR_ID_2_SEED
-    global MIR_ID_SPECIES
-    global MIR_TYPE_2_MATCH
-    global SPECIES_START_END
-    global SPECIES_START_END_2_MATCH
-    global SPECIES_TO_UTR
-    global SPECIES_START_END_REMOVED
-    global SPECIES_START_END_2_MATCH_REMOVED
-    global GROUP_NUM_TO_SITE_TYPES
-    global GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST
-    global GROUP_TYPES_LIST_2_GROUP_TYPE
-    global SITE_TO_GROUP_NUM
-    global GROUP_NUM_TO_SPECIES
-    global GET_MATCH
-    global SITE_ID_2_SITE_TYPE
-    global SITE_ID_2_LENGTH
-    global FIND_SITES_ALL_SPECIES
-    global REQUIRED_OVERLAP
     global BEG_UTR_MASK_LENGTH
     global VERBOSE
 

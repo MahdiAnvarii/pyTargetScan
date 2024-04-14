@@ -1,4 +1,4 @@
-This folder provides Python script and example files to perform miRNA target prediction using the TargetScan algorithm
+Python script to perform miRNA target prediction using the TargetScan algorithm
 
 INTRODUCTION
 

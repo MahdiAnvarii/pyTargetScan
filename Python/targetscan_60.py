@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 #######################################################################
-
 # Basic ideas:
 #
 # 1 - Grab all miRNA info.
@@ -822,17 +821,20 @@ def read_utrs():
     process_UTR_set()
 
 
+# Start program
 MIRNA_FILE, UTR_FILE, COORDS_FILE = checkArguments()
+
+# Get miRNA family data
 readMiRNAs()
 
-
+# Write conserved group to this file
 with open(COORDS_FILE, "w") as coords:
     # Print output file header
     header = "a_Gene_ID\tmiRNA_family_ID\tspecies_ID\tMSA_start\tMSA_end\tUTR_start\tUTR_end\tGroup_num\tSite_type\tmiRNA in this species\tGroup_type\tSpecies_in_this_group\tSpecies_in_this_group_with_this_site_type\n"
     coords.write(header)
 
-
-
+# Show how to summarize groups
 get_site_type_keys()
 
+# Go through UTR file, processsing one gene at a time
 read_utrs()

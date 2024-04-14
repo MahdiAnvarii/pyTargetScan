@@ -33,7 +33,6 @@ GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST = {}
 GROUP_TYPES_LIST_2_GROUP_TYPE = {}
 SITE_TO_GROUP_NUM = {}
 GROUP_NUM_TO_SPECIES = {}
-GET_MATCH = {}
 SITE_ID_2_SITE_TYPE = {}
 SITE_ID_2_LENGTH = {}
 
@@ -43,6 +42,7 @@ FIND_SITES_ALL_SPECIES = 1
 REQUIRED_OVERLAP = 2
 BEG_UTR_MASK_LENGTH = 0
 VERBOSE = 1
+
 
 def checkArguments():
     # Check for input and output file arguments
@@ -126,7 +126,6 @@ def checkArguments():
 
     return (miRNAfile, UTRfile, coordsFile)
 
-# MIRNA_FILE, UTR_FILE, COORDS_FILE = checkArguments()
 
 def makeSeedMatchRegex(seedMatch):
     # Turn a seed match region into a Python regular expression
@@ -175,6 +174,7 @@ def get_seeds(seedRegion, MIR_FAM_ID):
         6: makeSeedMatchRegex(rseed6)
     }
 
+
 def readMiRNAs():
     global MIR_ID_2_SEED, MIR_ID_SPECIES, MIRNA_FILE
 
@@ -199,14 +199,6 @@ def readMiRNAs():
     for MIR_FAM_ID in sorted(MIR_ID_2_SEED.keys()):
         get_seeds(MIR_ID_2_SEED[MIR_FAM_ID], MIR_FAM_ID)
 
-# readMiRNAs()
-
-'''
-with open(COORDS_FILE, "w") as coords:
-    # Print output file header
-    header = "a_Gene_ID\tmiRNA_family_ID\tspecies_ID\tMSA_start\tMSA_end\tUTR_start\tUTR_end\tGroup_num\tSite_type\tmiRNA in this species\tGroup_type\tSpecies_in_this_group\tSpecies_in_this_group_with_this_site_type\n"
-    coords.write(header)
-'''
 
 def get_site_type_keys():
 
@@ -230,7 +222,6 @@ def get_site_type_keys():
         6: 6
     }
 
-# get_site_type_keys()
 
 def get_matches(MIR_FAM_ID, speciesID, matchType):
     global GROUP_NUM
@@ -277,6 +268,7 @@ def get_matches(MIR_FAM_ID, speciesID, matchType):
         match_end = match.end()
         backtrack_length = match_end - match_start
         match_start -= backtrack_length - 1
+
 
 def drop_this_site(species, start, end):
     global GROUP_NUM
@@ -325,6 +317,7 @@ def drop_this_site(species, start, end):
         # Was it already deleted, or is there a gap that requires adjustment???
         return 0
 
+
 def get_subset_coords(alignment):
     global USAGE
     global FILE_FORMATS
@@ -369,6 +362,7 @@ def get_subset_coords(alignment):
         end_minus_one_offset = len(match.group(1)) - 1
 
     return start_plus_one_offset, start_plus_two_offset, end_minus_one_offset
+
 
 def find_remove_match_subsets():
     global GROUP_NUM
@@ -457,6 +451,7 @@ def find_remove_match_subsets():
             if 6 in GET_MATCH:
                 drop_site = drop_this_site(species, start_plus_one, end_minus_one)  # 6mer
 
+
 def get_utr_coords(align, end, utr_type):
 
     utr_beg = align[:int(end)].replace('-', '')
@@ -464,13 +459,6 @@ def get_utr_coords(align, end, utr_type):
     end = start + SITE_ID_2_LENGTH[utr_type] - 1
     return start, end
 
-def get_utr_coords2(align, end, type):
-    utr_beg = align[:end].replace('-', '')
-
-    start = len(utr_beg)
-    end = start + SITE_ID_2_LENGTH[type] - 1
-
-    return start, end
 
 def make_list_non_redundant(list_str, sep):
     # Convert a list string into a non-redundant array
@@ -481,11 +469,6 @@ def make_list_non_redundant(list_str, sep):
     unique_list.sort()
     return unique_list
 
-def make_list_non_redundant2(list_str, sep):
-    values = list_str.split(sep)
-    unique_list = list(set(values))
-    unique_list.sort(key=lambda x: int(x) if x.isdigit() else x)
-    return unique_list
 
 def group_this_pair(site1, site2):
     global GROUP_NUM
@@ -710,149 +693,6 @@ def group_sites_this_gene_this_mirna():
 
         OUTPUT_THIS_GENE_THIS_MIR.append(f"{LAST_UTR_ID}\t{MIR_FAM_ID}\t{species_this_site}\t{site_all_info[1]}\t{site_all_info[2]}\t{utr_start}\t{utr_end}\t{SITE_TO_GROUP_NUM[this_site]}\t{SPECIES_START_END[this_site]}\t{annotated}")
 
-def group_sites_this_gene_this_mirna2():
-    global GROUP_NUM
-    global MIR_FAM_ID
-    global LAST_UTR_ID
-    global OUTPUT_THIS_GENE_THIS_MIR
-    global MIR_ID_2_SEED
-    global MIR_ID_SPECIES
-    global MIR_TYPE_2_MATCH
-    global SPECIES_START_END
-    global SPECIES_START_END_2_MATCH
-    global SPECIES_TO_UTR
-    global SPECIES_START_END_REMOVED
-    global SPECIES_START_END_2_MATCH_REMOVED
-    global GROUP_NUM_TO_SITE_TYPES
-    global GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST
-    global GROUP_TYPES_LIST_2_GROUP_TYPE
-    global SITE_TO_GROUP_NUM
-    global GROUP_NUM_TO_SPECIES
-    global GET_MATCH
-    global SITE_ID_2_SITE_TYPE
-    global SITE_ID_2_LENGTH
-    global FIND_SITES_ALL_SPECIES
-    global REQUIRED_OVERLAP
-    global BEG_UTR_MASK_LENGTH
-    global VERBOSE
-
-    # Can we drop this variable???  It doesn't seem to be used.
-    pair_to_distance = {}
-
-    ############### Check for position overlap between sites
-
-    # Do an all vs. all comparison to identify overlaps
-    for site1 in sorted(SPECIES_START_END.keys()):
-        site1_species, site1_start, site1_end = site1.split("::")
-
-        for site2 in sorted(SPECIES_START_END.keys()):
-            site2_species, site2_start, site2_end = site2.split("::")
-
-            # Skip comparison of same-species sites
-            if site1_species != site2_species:
-                ############  Choose combinations to give overlap  ############
-
-                # Same start and end
-                if site1_start == site2_start and site1_end == site2_end:
-                    group_this_pair(site1, site2)
-                    pair_to_distance[f"{site1} {site2}"] = int(site1_end) - int(site1_start) + 1
-                # Same start
-                elif site1_start == site2_start:
-                    group_this_pair(site1, site2)
-                    if int(site1_end) > int(site2_end):
-                        pair_to_distance[f"{site1} {site2}"] = int(site1_end) - int(site1_start) + 1
-                    else:
-                        pair_to_distance[f"{site1} {site2}"] = int(site2_end) - int(site2_start) + 1
-                # Same end
-                elif site1_end == site2_end:
-                    group_this_pair(site1, site2)
-                    if int(site1_start) < int(site2_start):
-                        pair_to_distance[f"{site1} {site2}"] = int(site1_end) - int(site1_start) + 1
-                    else:
-                        pair_to_distance[f"{site1} {site2}"] = int(site2_end) - int(site2_start) + 1
-                # Offset one direction
-                #     xxxxxxx
-                #    xxxxxxx
-                elif int(site1_start) > int(site2_start) and int(site1_start) <= int(site2_end):
-                    num_overlap_nt = int(site2_end) - int(site1_start) + 1
-                    if num_overlap_nt >= REQUIRED_OVERLAP:
-                        group_this_pair(site1, site2)
-                        pair_to_distance[f"{site1} {site2}"] = num_overlap_nt
-                # Offset other direction
-                #    xxxxxxx
-                #     xxxxxxx
-                elif int(site1_end) >= int(site2_start) and int(site1_end) < int(site2_end):
-                    num_overlap_nt = int(site1_end) - int(site2_start) + 1
-                    if num_overlap_nt >= REQUIRED_OVERLAP:
-                        group_this_pair(site1, site2)
-                        pair_to_distance[f"{site1} {site2}"] = num_overlap_nt
-                # One within the other (with gaps)
-                #      xxxxxxx          xxxxxxxxx
-                #     xxxxxxxxx          xxxxxxx
-                elif (int(site1_start) > int(site2_start) and int(site1_end) < int(site2_end)) or \
-                     (int(site2_start) > int(site1_start) and int(site2_end) < int(site1_end)):
-                    group_this_pair(site1, site2)
-                    pair_to_distance[f"{site1} {site2}"] = num_overlap_nt
-
-    for this_site in sorted(SPECIES_START_END.keys()):
-        annotated = ""
-
-        site_all_info = this_site.split("::")
-        species_this_site = site_all_info[0]
-
-        # This site is a group of 1, so no group info yet
-        if not SITE_TO_GROUP_NUM.get(this_site):
-            # If this group hasn't yet been assigned a number, give it one.
-            GROUP_NUM += 1
-            SITE_TO_GROUP_NUM[this_site] = GROUP_NUM
-
-        if not GROUP_NUM_TO_SITE_TYPES.get(SITE_TO_GROUP_NUM[this_site]):
-            # Start a list of site types for this group
-            GROUP_NUM_TO_SITE_TYPES[SITE_TO_GROUP_NUM[this_site]] = SPECIES_START_END[this_site]
-        else:
-            # Add to the list of site types for this group
-            GROUP_NUM_TO_SITE_TYPES[SITE_TO_GROUP_NUM[this_site]] += ";" + SPECIES_START_END[this_site]
-
-        # Make a list of species in which a site type is found (in this group)
-        GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST[SITE_TO_GROUP_NUM[this_site]][SPECIES_START_END[this_site]] += species_this_site + " "
-
-        ###  If a wide site is present, its subset sites are also present
-        if SPECIES_START_END[this_site] == 1:  # 7mer-1a
-            if GET_MATCH.get(6):
-                GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST[SITE_TO_GROUP_NUM[this_site]][6] += species_this_site + " "  # 6mer
-            if GET_MATCH.get(5):
-                GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST[SITE_TO_GROUP_NUM[this_site]][5] += species_this_site + " "  # 6mer-1a
-        elif SPECIES_START_END[this_site] == 2:  # 7mer-m8
-            if GET_MATCH.get(6):
-                GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST[SITE_TO_GROUP_NUM[this_site]][6] += species_this_site + " "  # 6mer
-        elif SPECIES_START_END[this_site] == 3:  # 8mer-1a
-            if GET_MATCH.get(1):
-                GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST[SITE_TO_GROUP_NUM[this_site]][1] += species_this_site + " "  # 7mer-1a
-            if GET_MATCH.get(2):
-                GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST[SITE_TO_GROUP_NUM[this_site]][2] += species_this_site + " "  # 7mer-m8
-            if GET_MATCH.get(5):
-                GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST[SITE_TO_GROUP_NUM[this_site]][5] += species_this_site + " "  # 6mer-1a
-            if GET_MATCH.get(6):
-                GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST[SITE_TO_GROUP_NUM[this_site]][6] += species_this_site + " "  # 6mer
-        elif SPECIES_START_END[this_site] == 4:  # 8mer-1u
-            if GET_MATCH.get(2):
-                GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST[SITE_TO_GROUP_NUM[this_site]][2] += species_this_site + " "  # 7mer-m8
-            if GET_MATCH.get(6):
-                GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST[SITE_TO_GROUP_NUM[this_site]][6] += species_this_site + " "  # 6mer
-
-        # Given the MSA coords, get the corresponding UTR coords
-        utr_start, utr_end = get_utr_coords(SPECIES_TO_UTR[site_all_info[0]], int(site_all_info[1]), SPECIES_START_END[this_site])
-
-        # Link each group to the species within it
-        GROUP_NUM_TO_SPECIES[SITE_TO_GROUP_NUM[this_site]] += species_this_site + ";"
-
-        # Is this miRNA annotated in this species?
-        if not MIR_ID_SPECIES.get(f"{MIR_FAM_ID}::{species_this_site}"):
-            annotated = " "
-        else:
-            annotated = "x"
-
-        OUTPUT_THIS_GENE_THIS_MIR.append(f"{LAST_UTR_ID}\t{MIR_FAM_ID}\t{species_this_site}\t{site_all_info[1]}\t{site_all_info[2]}\t{utr_start}\t{utr_end}\t{SITE_TO_GROUP_NUM[this_site]}\t{SPECIES_START_END[this_site]}\t{annotated}")
 
 def process_UTR_set():
     global GROUP_NUM
@@ -980,8 +820,6 @@ def read_utrs():
 
     # Get the last one
     process_UTR_set()
-
-# read_utrs()
 
 
 MIRNA_FILE, UTR_FILE, COORDS_FILE = checkArguments()

@@ -223,29 +223,8 @@ def get_site_type_keys():
 
 
 def get_matches(MIR_FAM_ID, speciesID, matchType):
-    global GROUP_NUM
-    global LAST_UTR_ID
-    global OUTPUT_THIS_GENE_THIS_MIR
-    global MIR_ID_2_SEED
-    global MIR_ID_SPECIES
-    global MIR_TYPE_2_MATCH
-    global SPECIES_START_END
-    global SPECIES_START_END_2_MATCH
-    global SPECIES_TO_UTR
-    global SPECIES_START_END_REMOVED
-    global SPECIES_START_END_2_MATCH_REMOVED
-    global GROUP_NUM_TO_SITE_TYPES
-    global GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST
-    global GROUP_TYPES_LIST_2_GROUP_TYPE
-    global SITE_TO_GROUP_NUM
-    global GROUP_NUM_TO_SPECIES
-    global GET_MATCH
-    global SITE_ID_2_SITE_TYPE
-    global SITE_ID_2_LENGTH
-    global FIND_SITES_ALL_SPECIES
-    global REQUIRED_OVERLAP
-    global BEG_UTR_MASK_LENGTH
-    global VERBOSE
+
+    global SPECIES_START_END, SPECIES_START_END_2_MATCH
 
     alignment = SPECIES_TO_UTR[speciesID]
     match = MIR_TYPE_2_MATCH[MIR_FAM_ID][matchType]
@@ -270,30 +249,8 @@ def get_matches(MIR_FAM_ID, speciesID, matchType):
 
 
 def drop_this_site(species, start, end):
-    global GROUP_NUM
-    global MIR_FAM_ID
-    global LAST_UTR_ID
-    global OUTPUT_THIS_GENE_THIS_MIR
-    global MIR_ID_2_SEED
-    global MIR_ID_SPECIES
-    global MIR_TYPE_2_MATCH
-    global SPECIES_START_END
-    global SPECIES_START_END_2_MATCH
-    global SPECIES_TO_UTR
-    global SPECIES_START_END_REMOVED
-    global SPECIES_START_END_2_MATCH_REMOVED
-    global GROUP_NUM_TO_SITE_TYPES
-    global GROUP_NUM_PLUS_TYPE_2_SPECIES_LIST
-    global GROUP_TYPES_LIST_2_GROUP_TYPE
-    global SITE_TO_GROUP_NUM
-    global GROUP_NUM_TO_SPECIES
-    global GET_MATCH
-    global SITE_ID_2_SITE_TYPE
-    global SITE_ID_2_LENGTH
-    global FIND_SITES_ALL_SPECIES
-    global REQUIRED_OVERLAP
-    global BEG_UTR_MASK_LENGTH
-    global VERBOSE
+
+    global SPECIES_START_END_REMOVED, SPECIES_START_END_2_MATCH_REMOVED
 
     key = f"{species}::{start}::{end}"
 

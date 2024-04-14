@@ -126,7 +126,7 @@ def checkArguments():
 
     return (miRNAfile, UTRfile, coordsFile)
 
-MIRNA_FILE, UTR_FILE, COORDS_FILE = checkArguments()
+# MIRNA_FILE, UTR_FILE, COORDS_FILE = checkArguments()
 
 def makeSeedMatchRegex(seedMatch):
     # Turn a seed match region into a Python regular expression
@@ -199,14 +199,14 @@ def readMiRNAs():
     for MIR_FAM_ID in sorted(MIR_ID_2_SEED.keys()):
         get_seeds(MIR_ID_2_SEED[MIR_FAM_ID], MIR_FAM_ID)
 
-readMiRNAs()
+# readMiRNAs()
 
-
+'''
 with open(COORDS_FILE, "w") as coords:
     # Print output file header
     header = "a_Gene_ID\tmiRNA_family_ID\tspecies_ID\tMSA_start\tMSA_end\tUTR_start\tUTR_end\tGroup_num\tSite_type\tmiRNA in this species\tGroup_type\tSpecies_in_this_group\tSpecies_in_this_group_with_this_site_type\n"
     coords.write(header)
-
+'''
 
 def get_site_type_keys():
 
@@ -230,8 +230,7 @@ def get_site_type_keys():
         6: 6
     }
 
-get_site_type_keys()
-
+# get_site_type_keys()
 
 def get_matches(MIR_FAM_ID, speciesID, matchType):
     global GROUP_NUM
@@ -981,5 +980,21 @@ def read_utrs():
 
     # Get the last one
     process_UTR_set()
+
+# read_utrs()
+
+
+MIRNA_FILE, UTR_FILE, COORDS_FILE = checkArguments()
+readMiRNAs()
+
+
+with open(COORDS_FILE, "w") as coords:
+    # Print output file header
+    header = "a_Gene_ID\tmiRNA_family_ID\tspecies_ID\tMSA_start\tMSA_end\tUTR_start\tUTR_end\tGroup_num\tSite_type\tmiRNA in this species\tGroup_type\tSpecies_in_this_group\tSpecies_in_this_group_with_this_site_type\n"
+    coords.write(header)
+
+
+
+get_site_type_keys()
 
 read_utrs()
